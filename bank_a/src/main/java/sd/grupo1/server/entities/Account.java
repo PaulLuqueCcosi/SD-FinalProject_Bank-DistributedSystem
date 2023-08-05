@@ -2,6 +2,16 @@ package sd.grupo1.server.entities;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * Debe de representar una cuenta
  * Entro los atributos se tiene
@@ -12,50 +22,74 @@ import java.io.Serializable;
  * 
  * 
  */
-
+@Entity
+@Table(name="Account")
 public class Account implements Serializable {
 
-    private int acc_num;
-    private int acc_pin;
-    private double acc_bal;
-    private int acc_status;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "acc_num")
+    private int accNum;
+
+    @Column(name = "acc_pin", nullable = false)
+    private int accPin;
+
+    @Column(name = "acc_bal", nullable = false)
+    private double accBal;
+
+    @Column(name = "acc_status", nullable = false)
+    private int accStatus;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Account() {
-        acc_num = 0;
-        acc_pin = 0;
-        acc_bal = 0;
-        acc_status = 0;
+        accNum = 0;
+        accPin = 0;
+        accBal = 0;
+        accStatus = 0;
+        user = null;
     }
 
     public int getAcc_num() {
-        return acc_num;
+        return accNum;
     }
 
     public void setAcc_num(int acc_num) {
-        this.acc_num = acc_num;
+        this.accNum = acc_num;
     }
 
     public int getAcc_pin() {
-        return acc_pin;
+        return accPin;
     }
 
     public void setAcc_pin(int acc_pin) {
-        this.acc_pin = acc_pin;
+        this.accPin = acc_pin;
     }
 
     public double getAcc_bal() {
-        return acc_bal;
+        return accBal;
     }
 
     public void setAcc_bal(double acc_bal) {
-        this.acc_bal = acc_bal;
+        this.accBal = acc_bal;
     }
 
     public int getAcc_status() {
-        return acc_status;
+        return accStatus;
     }
 
     public void setAcc_status(int acc_status) {
-        this.acc_status = acc_status;
+        this.accStatus = acc_status;
+    }
+
+    public void setIUser(User idUser){
+        this.user = idUser;
+    }
+
+    public User getIdUser(){
+        return user;
     }
 }

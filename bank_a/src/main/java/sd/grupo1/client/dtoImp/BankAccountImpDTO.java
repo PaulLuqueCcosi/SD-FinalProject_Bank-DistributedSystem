@@ -2,6 +2,8 @@ package sd.grupo1.client.dtoImp;
 
 import java.util.List;
 
+import org.stringtemplate.v4.compiler.CodeGenerator.region_return;
+
 import sd.grupo1.client.dto.AccountUserDTO;
 import sd.grupo1.client.dto.BankAccountDTO;
 import sd.grupo1.server.service.BankInterface;
@@ -22,14 +24,12 @@ public class BankAccountImpDTO implements BankAccountDTO{
 
     @Override
     public BankInterface getBank() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBank'");
+        return bank;
     }
 
     @Override
     public List<AccountUserDTO> getAccounts() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAccounts'");
+        return lista;
     }
 
     

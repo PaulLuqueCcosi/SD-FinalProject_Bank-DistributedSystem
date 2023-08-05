@@ -30,6 +30,7 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public boolean checkUserExist(int DNI) throws RemoteException {
+        
         throw new UnsupportedOperationException("Método 'checkUserExist' no implementado");
     }
 
