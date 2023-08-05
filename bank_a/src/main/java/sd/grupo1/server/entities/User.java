@@ -1,6 +1,8 @@
 package sd.grupo1.server.entities;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +22,8 @@ public class User {
     @Column(name = "dni", nullable = false)
     private String dni;
 
-    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch =
+    // FetchType.LAZY)
     private List<Account> accounts;
 
     // Constructors, getters, and setters
@@ -32,6 +35,7 @@ public class User {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
+        this.accounts = new ArrayList<Account>();
     }
 
     public int getId() {
@@ -72,5 +76,20 @@ public class User {
 
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        User user = (User) o;
+        return id == user.id;
+    }
+
+    public void addAccount(Account acc){
+        acc.setIUser(this);
+        accounts.add(acc);
     }
 }

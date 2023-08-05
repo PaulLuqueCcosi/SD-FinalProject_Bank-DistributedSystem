@@ -23,9 +23,8 @@ import javax.persistence.Table;
  * 
  */
 @Entity
-@Table(name="Account")
+@Table(name = "Account")
 public class Account implements Serializable {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,11 +84,22 @@ public class Account implements Serializable {
         this.accStatus = acc_status;
     }
 
-    public void setIUser(User idUser){
+    public void setIUser(User idUser) {
         this.user = idUser;
     }
 
-    public User getIdUser(){
+    public User getIdUser() {
         return user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        Account account = (Account) o;
+        return accNum == account.accNum;
+    }
+
 }
