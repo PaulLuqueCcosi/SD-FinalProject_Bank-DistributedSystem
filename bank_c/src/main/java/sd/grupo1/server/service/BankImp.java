@@ -19,7 +19,7 @@ public class BankImp extends UnicastRemoteObject implements BankInterface{
 
     @Override
     public boolean checkUserExist(int DNI) throws RemoteException {
-        return (DNI == 73057755);
+        return (DNI == 74057755);
         
         
     }

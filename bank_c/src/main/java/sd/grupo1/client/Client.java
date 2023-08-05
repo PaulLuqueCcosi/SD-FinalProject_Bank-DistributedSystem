@@ -18,21 +18,9 @@ public class Client extends Policy {
     public static void main(String[] args) throws RemoteException, NotBoundException {
 
         Registry bank_reg = LocateRegistry.getRegistry("127.0.0.1",1099);
+
         BankInterface bank = (BankInterface) bank_reg.lookup("Bank");
-
-
-        Registry bank_regC = LocateRegistry.getRegistry("127.0.0.1",3099);
-        BankInterface bankC = (BankInterface) bank_regC.lookup("BankC");
-
-
-        if(bank.checkUserExist(73057755)) {
-            System.out.println("TRUE A");
-        }
-
-        if(bankC.checkUserExist(74057755)){
-            System.out.println("TRUE C");
-        }
-
+        bank.checkUserExist(73057755);
 
     }
 }

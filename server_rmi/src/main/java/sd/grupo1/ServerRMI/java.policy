@@ -1,0 +1,7 @@
+// java.policy
+grant {
+    permission java.security.AllPermission; 
+    // O conceder solo los permisos necesarios para tu aplicación
+    permission java.net.SocketPermission "localhost:1099", "connect,resolve";
+    // Otros permisos necesarios para tu aplicación, si los hay
+};
