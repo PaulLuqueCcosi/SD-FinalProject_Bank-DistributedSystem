@@ -12,9 +12,9 @@ import sd.grupo1.server.serviceImp.BankInterfaceImp;
  *
  */
 public class Main extends Policy{
-    int portBankService = 3099;
-    String name = "BankC";
-    String textReady = "Bank C in redy";
+    int portBankService = 2099;
+    String name = "BankB";
+    String textReady = "Bank B in redy";
 
     private void startServer() {
         try {

@@ -5,14 +5,16 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.security.*;
 
-import sd.grupo1.server.service.BankImp;
+import sd.grupo1.server.serviceImp.BankInterfaceImp;
 
 /**
  * Hello world!
  *
  */
 public class Main extends Policy{
-    int portBankService = 2099;
+    int portBankService = 1099;
+    String name = "BankA";
+    String textReady = "Bank A in redy";
 
     private void startServer() {
         try {
@@ -28,10 +30,10 @@ public class Main extends Policy{
 
             // System.out.println(stub.toString());
 
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("Bank", new BankImp());
+            Registry registry = LocateRegistry.createRegistry(portBankService);
+            registry.rebind(name, new BankInterfaceImp());
             
-            System.out.println("system is ready");
+            System.out.println(textReady);
 
 
 

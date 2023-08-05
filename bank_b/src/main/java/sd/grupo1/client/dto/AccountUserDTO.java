@@ -1,5 +1,4 @@
-
-package sd.grupo1.server.dto;
+package sd.grupo1.client.dto;
 
 import java.io.Serializable;
 

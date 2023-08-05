@@ -1,6 +1,6 @@
-package sd.grupo1.server.dtoImp;
+package sd.grupo1.client.dtoImp;
 
-import sd.grupo1.server.dto.AccountUserDTO;
+import sd.grupo1.client.dto.AccountUserDTO;
 import sd.grupo1.server.entities.Account;
 import sd.grupo1.server.entities.User;
 
