@@ -3,20 +3,34 @@ package sd.grupo1.server.serviceImp;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.List;
 
+import sd.grupo1.server.dao.DaoAccount;
+import sd.grupo1.server.dao.DaoUser;
+import sd.grupo1.server.daoImp.JsonFileAccountDAO;
+import sd.grupo1.server.daoImp.JsonFileUserDAO;
 import sd.grupo1.server.dto.AccountUserDTO;
+import sd.grupo1.server.dtoImp.AccountUserImpDTO;
+import sd.grupo1.server.entities.Account;
+import sd.grupo1.server.entities.User;
 import sd.grupo1.server.service.BankInterface;
 
 /**
- * Implementación de la interfaz remota BankInterface que representa el servicio del banco.
- * Esta clase extiende UnicastRemoteObject, lo que permite que los objetos de esta clase sean
+ * Implementación de la interfaz remota BankInterface que representa el servicio
+ * del banco.
+ * Esta clase extiende UnicastRemoteObject, lo que permite que los objetos de
+ * esta clase sean
  * utilizados para la comunicación remota mediante RMI.
  */
 public class BankInterfaceImp extends UnicastRemoteObject implements BankInterface, Serializable {
 
+    private DaoUser daoUser = new JsonFileUserDAO("dataBaseUser_B.json");
+    private DaoAccount daoAccount = new JsonFileAccountDAO("dataBaseAccount_B.json");
+
     /**
-     * Constructor por defecto que llama al constructor de la clase base UnicastRemoteObject.
+     * Constructor por defecto que llama al constructor de la clase base
+     * UnicastRemoteObject.
      * El constructor de UnicastRemoteObject debe manejar RemoteException.
      *
      * @throws RemoteException Si ocurre un error al instanciar el objeto remoto.
@@ -25,12 +39,21 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
         super();
     }
 
+    public BankInterfaceImp(DaoUser daoUser , DaoAccount daoAccount) throws RemoteException {
+        this();
+        this.daoAccount = daoAccount;
+        this.daoUser = daoUser;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public boolean checkUserExist(int DNI) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'checkUserExist' no implementado");
+
+        User user = daoUser.getUserByDni(String.valueOf(DNI));
+        return (user != null);
+
     }
 
     /**
@@ -38,7 +61,18 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public List<AccountUserDTO> listAccount(int DNI) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'listAccount' no implementado");
+        User user = daoUser.getUserByDni(String.valueOf(DNI));
+        if (user == null) {
+            return null;
+        }
+
+        List<AccountUserDTO> accountUserDTOs = new ArrayList<>();
+        List<Account> userAccounts = daoAccount.userAccounts(user);
+        for (Account account : userAccounts) {
+            AccountUserDTO accountUserDTO = new AccountUserImpDTO(account, user);
+            accountUserDTOs.add(accountUserDTO);
+        }
+        return accountUserDTOs;
     }
 
     /**
@@ -46,7 +80,9 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public boolean checkAccPin(int acnt, int pin) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'checkAccPin' no implementado");
+
+        Account account = daoAccount.getAccountByAccNum(acnt);
+        return (account != null && account.getAcc_pin() == pin);
     }
 
     /**
@@ -54,7 +90,13 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public boolean deposit(int acnt, double amt) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'deposit' no implementado");
+        Account account = daoAccount.getAccountByAccNum(acnt);
+        if (account != null) {
+            account.setAcc_bal(account.getAcc_bal() + amt);
+            daoAccount.updateAccount(account);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -62,7 +104,13 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public boolean withdraw(int acnt, double amt) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'withdraw' no implementado");
+        Account account = daoAccount.getAccountByAccNum(acnt);
+        if (account != null && account.getAcc_bal() >= amt) {
+            account.setAcc_bal(account.getAcc_bal() - amt);
+            daoAccount.updateAccount(account);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -70,7 +118,11 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public double checkBalance(int acnt) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'checkBalance' no implementado");
+        Account account = daoAccount.getAccountByAccNum(acnt);
+        if (account != null) {
+            return account.getAcc_bal();
+        }
+        return -1; // Indica que la cuenta no existe.
     }
 
     /**
@@ -78,7 +130,8 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public boolean isPossibleWithdraw(int acnt, double amt) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'isPossibleWithdraw' no implementado");
+        Account account = daoAccount.getAccountByAccNum(acnt);
+        return (account != null && account.getAcc_bal() >= amt);
     }
 
     /**
@@ -86,7 +139,16 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      */
     @Override
     public boolean transfer(int acntOrigin, int acnDesty, double amt) throws RemoteException {
-        throw new UnsupportedOperationException("Método 'transfer' no implementado");
+        Account originAccount = daoAccount.getAccountByAccNum(acntOrigin);
+        Account destAccount = daoAccount.getAccountByAccNum(acnDesty);
+        if (originAccount != null && destAccount != null && originAccount.getAcc_bal() >= amt) {
+            originAccount.setAcc_bal(originAccount.getAcc_bal() - amt);
+            destAccount.setAcc_bal(destAccount.getAcc_bal() + amt);
+            daoAccount.updateAccount(originAccount);
+            daoAccount.updateAccount(destAccount);
+            return true;
+        }
+        return false;
     }
 
 }

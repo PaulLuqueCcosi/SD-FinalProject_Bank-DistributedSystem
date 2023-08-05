@@ -26,7 +26,7 @@ public interface AccountUserDTO extends Serializable {
      *
      * @return El saldo de la cuenta.
      */
-    int getBalanceAccount();
+    double getBalanceAccount();
 
     /**
      * Obtiene el nombre del usuario asociado con la cuenta.

@@ -4,49 +4,54 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.List;
 
 import sd.grupo1.client.dto.BankAccountDTO;
+import sd.grupo1.client.dtoImp.BankAccountImpDTO;
 import sd.grupo1.client.service.InterfaceSD;
+import sd.grupo1.server.dto.AccountUserDTO;
 import sd.grupo1.server.service.BankInterface;
 
 /**
- * Implementación de la interfaz InterfaceSD que representa el servicio del sistema distribuido (SD) para el cliente.
- * Esta clase proporciona la implementación de los métodos para interactuar con el sistema bancario distribuido.
+ * Implementación de la interfaz InterfaceSD que representa el servicio del
+ * sistema distribuido (SD) para el cliente.
+ * Esta clase proporciona la implementación de los métodos para interactuar con
+ * el sistema bancario distribuido.
  */
 public class InterfaceSDImp implements InterfaceSD {
+
+
+    private BankInterface getBankInterface(String bankName, int port) throws RemoteException, NotBoundException {
+        Registry registry = LocateRegistry.getRegistry("127.0.0.1", port);
+        return (BankInterface) registry.lookup(bankName);
+    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public List<BankAccountDTO> getAllAcount(int DNI) throws RemoteException {
-
-        // TODO
-
-        Registry bank_reg = LocateRegistry.getRegistry("127.0.0.1",1099);
-        BankInterface bank;
+        List<BankAccountDTO> bankAccounts = new ArrayList<>();
         try {
-            bank = (BankInterface) bank_reg.lookup("Bank");
-            bank.listAccount(DNI);
+            BankInterface bankA = getBankInterface("BankA", 1099);
+            BankInterface bankB = getBankInterface("BankB", 2099);
+            BankInterface bankC = getBankInterface("BankC", 3099);
+
+            // You can now call the listAccount() method on each bank interface to get the account information.
+            List<AccountUserDTO> accountsA = bankA.listAccount(DNI);
+            List<AccountUserDTO> accountsB = bankB.listAccount(DNI);
+            List<AccountUserDTO> accountsC = bankC.listAccount(DNI);
+
+            BankAccountDTO bankA = new BankAccountImpDTO(bankA, accountsA);
+
+            
+
+    
         } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
-        Registry bank_regC = LocateRegistry.getRegistry("127.0.0.1",3099);
-        BankInterface bankC;
-        try {
-            bankC = (BankInterface) bank_regC.lookup("BankC");
-        } catch (NotBoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
-
-        throw new UnsupportedOperationException("Método 'getAllAcount' no implementado");
+        return bankAccounts;
     }
 
     /**

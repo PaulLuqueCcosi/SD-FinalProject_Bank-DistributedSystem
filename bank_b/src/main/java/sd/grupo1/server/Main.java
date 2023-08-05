@@ -11,7 +11,7 @@ import sd.grupo1.server.serviceImp.BankInterfaceImp;
  * Hello world!
  *
  */
-public class Main extends Policy{
+public class Main extends Policy {
     int portBankService = 2099;
     String name = "BankB";
     String textReady = "Bank B in redy";
@@ -22,20 +22,17 @@ public class Main extends Policy{
             // LocateRegistry.createRegistry(5000);
             // BankInterface stub = new BankImp();
             // Naming.rebind("rmi://localhost:5000/bank", stub);
-                
 
             // // Registry registry = LocateRegistry.createRegistry(portBankService);
             // // registry.rebind("Bank", new ServiceImplement());
-            // System.out.println("system bank A server RMI  is ready");
+            // System.out.println("system bank A server RMI is ready");
 
             // System.out.println(stub.toString());
 
             Registry registry = LocateRegistry.createRegistry(portBankService);
             registry.rebind(name, new BankInterfaceImp());
-            
+
             System.out.println(textReady);
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,9 +41,11 @@ public class Main extends Policy{
 
     public static void main(String[] args) throws RemoteException {
 
-
         Main main = new Main();
-        System.setProperty("java.rmi.server.hostname", "127.0.0.1");// sets the RMI service to start on local host
+        System.setProperty("java.rmi.server.hostname", "127.0.0.1");// sets the RMI
+        // service to start on local host
         main.startServer();
+
     }
+
 }

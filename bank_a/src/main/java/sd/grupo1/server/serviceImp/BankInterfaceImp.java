@@ -25,8 +25,8 @@ import sd.grupo1.server.service.BankInterface;
  */
 public class BankInterfaceImp extends UnicastRemoteObject implements BankInterface, Serializable {
 
-    private DaoUser daoUser = new JsonFileUserDAO("dataBaseUser.json");
-    private DaoAccount daoAccount = new JsonFileAccountDAO("dataBaseAccount.json");
+    private DaoUser daoUser = new JsonFileUserDAO("dataBaseUser_A.json");
+    private DaoAccount daoAccount = new JsonFileAccountDAO("dataBaseAccount_A.json");
 
     /**
      * Constructor por defecto que llama al constructor de la clase base

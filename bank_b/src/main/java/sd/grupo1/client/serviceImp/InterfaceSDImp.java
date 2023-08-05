@@ -11,8 +11,10 @@ import sd.grupo1.client.service.InterfaceSD;
 import sd.grupo1.server.service.BankInterface;
 
 /**
- * Implementación de la interfaz InterfaceSD que representa el servicio del sistema distribuido (SD) para el cliente.
- * Esta clase proporciona la implementación de los métodos para interactuar con el sistema bancario distribuido.
+ * Implementación de la interfaz InterfaceSD que representa el servicio del
+ * sistema distribuido (SD) para el cliente.
+ * Esta clase proporciona la implementación de los métodos para interactuar con
+ * el sistema bancario distribuido.
  */
 public class InterfaceSDImp implements InterfaceSD {
 
@@ -24,18 +26,26 @@ public class InterfaceSDImp implements InterfaceSD {
 
         // TODO
 
-        Registry bank_reg = LocateRegistry.getRegistry("127.0.0.1",1099);
-        BankInterface bank;
+        Registry bank_regA = LocateRegistry.getRegistry("127.0.0.1", 1099);
+        BankInterface bankA;
         try {
-            bank = (BankInterface) bank_reg.lookup("Bank");
-            bank.listAccount(DNI);
+            bankA = (BankInterface) bank_regA.lookup("BankA");
+
         } catch (NotBoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
+        Registry bank_regB = LocateRegistry.getRegistry("127.0.0.1", 3099);
+        BankInterface bankB;
+        try {
+            bankB = (BankInterface) bank_regB.lookup("BankB");
+        } catch (NotBoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-        Registry bank_regC = LocateRegistry.getRegistry("127.0.0.1",3099);
+        Registry bank_regC = LocateRegistry.getRegistry("127.0.0.1", 3099);
         BankInterface bankC;
         try {
             bankC = (BankInterface) bank_regC.lookup("BankC");
@@ -43,8 +53,6 @@ public class InterfaceSDImp implements InterfaceSD {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
 
         throw new UnsupportedOperationException("Método 'getAllAcount' no implementado");
     }
