@@ -178,7 +178,7 @@ public class BankConsoleApp {
             bank.deposit(nuemroDeCuenta, amount);
         } catch (RemoteException e) {
             System.out.println("No se pudo conectar con el banco");
-            e.printStackTrace();
+            // e.printStackTrace();
         } catch (NoAccountException e) {
             System.out.println("Numero de cuenta no existe");
         }
@@ -308,25 +308,25 @@ public class BankConsoleApp {
         BankInterface bank1 = map.get(indice1).getBank();
         System.out.println("\n");
         System.out.printf("Cuenta Numero : %s , seleccionada del banco %s", nuemroDeCuenta1,
-                map.get(indice1).getNameBank()+"\n");
+                map.get(indice1).getNameBank() + "\n");
 
         // ingresa el mondo a retirar
-        System.out.println("Ingrese el monto a retirar: ");
+        System.out.print("Ingrese el monto a retirar: ");
         double amount = Double.parseDouble(scanner.nextLine());
 
         boolean isPosible = false;
         try {
             isPosible = bank1.isPossibleWithdraw(nuemroDeCuenta1, amount);
         } catch (RemoteException | NoAccountException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("Error al comunicarse con el Banco");
+            // e.printStackTrace();
         }
         if (!isPosible) {
             try {
                 System.out.println("Saldo en la cuenta no es suficiente: " + bank1.checkBalance(nuemroDeCuenta1));
             } catch (RemoteException | NoAccountException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                System.out.println("Error al comunicarse con el Banco");
+
             }
             return;
         }
@@ -341,7 +341,7 @@ public class BankConsoleApp {
             isPin = bank1.checkAccPin(nuemroDeCuenta1, inpin);
         } catch (RemoteException | NoAccountException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            System.out.println("Error al comunicarse con el banco");
         }
 
         if (!isPin) {

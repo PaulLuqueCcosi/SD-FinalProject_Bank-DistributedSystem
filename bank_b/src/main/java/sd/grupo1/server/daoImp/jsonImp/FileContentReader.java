@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 
 public class FileContentReader {
-    public static String readFromFile(String directory, String filee) {
+    public synchronized static String readFromFile(String directory, String filee) {
 
         String filePath = directory + filee;
 
@@ -24,7 +24,7 @@ public class FileContentReader {
 
             scanner.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            
             // Puedes manejar el error según tus necesidades.
             // Por ejemplo, puedes retornar un mensaje de error específico.
             return "Error: Archivo no encontrado.";
@@ -33,7 +33,7 @@ public class FileContentReader {
         return content.toString();
     }
 
-    public static void saveToFile(String directory, String fileName, String content) {
+    public synchronized static void saveToFile(String directory, String fileName, String content) {
         try {
             File file = new File(directory, fileName);
             FileWriter writer = new FileWriter(file);
@@ -41,7 +41,6 @@ public class FileContentReader {
             writer.close();
             System.out.println("Archivo guardado exitosamente en: " + file.getAbsolutePath());
         } catch (IOException e) {
-            e.printStackTrace();
             // Puedes manejar el error según tus necesidades.
             // Por ejemplo, puedes imprimir un mensaje de error específico.
             System.err.println("Error al guardar el archivo.");

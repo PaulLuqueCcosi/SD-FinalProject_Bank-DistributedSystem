@@ -8,21 +8,21 @@
       {
         "accNum": 0,
         "accPin": 0,
-        "accBal": 170.0,
+        "accBal": 150.0,
         "accStatus": 0,
         "idUser": 0
       },
       {
         "accNum": 1,
         "accPin": 0,
-        "accBal": 40.0,
+        "accBal": 110.0,
         "accStatus": 0,
         "idUser": 0
       },
       {
         "accNum": 2,
         "accPin": 0,
-        "accBal": 120.0,
+        "accBal": 0.0,
         "accStatus": 0,
         "idUser": 0
       }

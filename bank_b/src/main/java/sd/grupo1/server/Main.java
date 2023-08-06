@@ -28,12 +28,8 @@ public class Main extends Policy {
     private void startServer() {
         try {
 
-            // creacion de los DAO
-            // DaoAccount daoAccount = new JsonFileAccountDAO(directory, bdFileAccount);
             Dao daoUser = new JsonFileUserDAO(directory, bdFileUser);
 
-            // creacion de la interfaz
-            // BankInterface bankInterface = new BankInterfaceImp(daoUser, daoAccount);
 
             Registry registry = LocateRegistry.createRegistry(portBankService);
             registry.rebind(name, new BankInterfaceImp(daoUser, name, location));
@@ -48,47 +44,9 @@ public class Main extends Policy {
     public static void main(String[] args) throws RemoteException {
 
         Main main = new Main();
-        System.setProperty("java.rmi.server.hostname", "127.0.0.1");// sets the RMI
+        System.setProperty("java.rmi.server.hostname", "0.0.0.0");// sets the RMI
         main.startServer();
 
-        // String directory = "BD_A/";
-        // String bdFileUser = "bd_a_user.json";
-        // // String bdFileAccount = "bd_a_account.json";
-        // // creacion de los DAO
-        // Dao daoUser = new JsonFileUserDAO(directory, bdFileUser);
-        // // Dao daoAccount = new JsonFileAccountDAO(directory, bdFileAccount);
-
-        // User user = daoUser.getUserById(0);
-        // Account a = daoUser.getAccountByAccNum(0);
-        // user.addAccount(a);
-        // daoUser.updateUser(user);
-        // daoAccount.updateAccount(a);
-
-        // for (User u2 : daoUser.getAllUsers()) {
-        //     System.out.println(u2);
-        // }
-        // System.out.println("---------");
-
-        // for (Account ac : daoUser.getAllAccounts()) {
-        //     System.out.println(ac);
-        // }
-
-        // System.out.println("depositoooooooooooo");
-        // a.setAcc_bal(100);
-        // daoUser.updateAccount(a);
-        // Account a2 = daoUser.getAccountByAccNum(0);
-
-        // a2.setAcc_bal(90);
-        // daoUser.updateAccount(a2);
-
-        // for (User u2 : daoUser.getAllUsers()) {
-        //     System.out.println(u2);
-        // }
-        // System.out.println("---------");
-
-        // for (Account ac : daoUser.getAllAccounts()) {
-        //     System.out.println(ac);
-        // }
     }
 
 }

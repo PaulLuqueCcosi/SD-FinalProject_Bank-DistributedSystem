@@ -98,7 +98,7 @@ public class JsonFileUserDAO implements Dao {
     }
 
     @Override
-    public void updateUser(User user) {
+    public synchronized void updateUser(User user) {
         // readUsersFromJsonFile();
         int index = -1;
         for (int i = 0; i < users.size(); i++) {
@@ -174,7 +174,7 @@ public class JsonFileUserDAO implements Dao {
     }
 
     @Override
-    public void updateAccount(Account account) {
+    public synchronized void updateAccount(Account account) {
         readUsersFromJsonFile();
         int index = -1;
         for (int i = 0; i < users.size(); i++) {
