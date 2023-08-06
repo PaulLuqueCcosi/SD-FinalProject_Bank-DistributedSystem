@@ -42,14 +42,23 @@ public class Account implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private int idUser;
 
     public Account() {
         accNum = 0;
         accPin = 0;
         accBal = 0;
         accStatus = 0;
-        user = null;
+        idUser = -1;
+    }
+
+    public Account(User u) {
+        accNum = 0;
+        accPin = 0;
+        accBal = 0;
+        accStatus = 0;
+        idUser = u.getId();
+        // u.addAccount(this);
     }
 
     public int getAcc_num() {
@@ -84,12 +93,12 @@ public class Account implements Serializable {
         this.accStatus = acc_status;
     }
 
-    public void setIUser(User idUser) {
-        this.user = idUser;
+    public void setIUser(int idUser) {
+        this.idUser = idUser;
     }
 
-    public User getIdUser() {
-        return user;
+    public int getIdUser() {
+        return idUser;
     }
 
     @Override
@@ -101,5 +110,16 @@ public class Account implements Serializable {
         Account account = (Account) o;
         return accNum == account.accNum;
     }
+
+    @Override
+        public String toString() {
+            return "Account{" +
+                    "accNum=" + accNum +
+                    ", accPin=" + accPin +
+                    ", accBal=" + accBal +
+                    ", accStatus=" + accStatus +
+                    ", idUser=" + idUser +
+                    '}';
+        }
 
 }

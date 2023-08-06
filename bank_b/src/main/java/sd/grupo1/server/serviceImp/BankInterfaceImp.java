@@ -6,10 +6,9 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import sd.grupo1.server.dao.DaoAccount;
-import sd.grupo1.server.dao.DaoUser;
-import sd.grupo1.server.daoImp.JsonFileAccountDAO;
-import sd.grupo1.server.daoImp.JsonFileUserDAO;
+import sd.grupo1.exception.NoAccountException;
+import sd.grupo1.exception.NoUserException;
+import sd.grupo1.server.dao.Dao;
 import sd.grupo1.server.dto.AccountUserDTO;
 import sd.grupo1.server.dtoImp.AccountUserImpDTO;
 import sd.grupo1.server.entities.Account;
@@ -25,8 +24,14 @@ import sd.grupo1.server.service.BankInterface;
  */
 public class BankInterfaceImp extends UnicastRemoteObject implements BankInterface, Serializable {
 
-    private DaoUser daoUser = new JsonFileUserDAO("dataBaseUser_B.json");
-    private DaoAccount daoAccount = new JsonFileAccountDAO("dataBaseAccount_B.json");
+    // private DaoUser daoUser = new JsonFileUserDAO("dataBaseUser_A.json");
+    // private DaoAccount daoAccount = new
+    // JsonFileAccountDAO("dataBaseAccount_A.json");
+
+    private Dao dao;
+    // private DaoAccount daoAccount;
+    private String name;
+    private String location;
 
     /**
      * Constructor por defecto que llama al constructor de la clase base
@@ -35,23 +40,25 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      *
      * @throws RemoteException Si ocurre un error al instanciar el objeto remoto.
      */
-    public BankInterfaceImp() throws RemoteException {
-        super();
-    }
+    // public BankInterfaceImp() throws RemoteException {
+    // super();
+    // }
 
-    public BankInterfaceImp(DaoUser daoUser , DaoAccount daoAccount) throws RemoteException {
-        this();
-        this.daoAccount = daoAccount;
-        this.daoUser = daoUser;
+    public BankInterfaceImp(Dao dao, String name, String location)
+            throws RemoteException {
+        super();
+        this.dao = dao;
+        this.name = name;
+        this.location = location;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean checkUserExist(int DNI) throws RemoteException {
+    public boolean checkUserExist(String DNI) throws RemoteException {
 
-        User user = daoUser.getUserByDni(String.valueOf(DNI));
+        User user = dao.getUserByDni(DNI);
         return (user != null);
 
     }
@@ -60,14 +67,14 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      * {@inheritDoc}
      */
     @Override
-    public List<AccountUserDTO> listAccount(int DNI) throws RemoteException {
-        User user = daoUser.getUserByDni(String.valueOf(DNI));
+    public List<AccountUserDTO> listAccount(String DNI) throws RemoteException, NoUserException {
+        User user = dao.getUserByDni(DNI);
         if (user == null) {
-            return null;
+            throw new NoUserException("El usuario con DNI: " + DNI + " no existe");
         }
 
         List<AccountUserDTO> accountUserDTOs = new ArrayList<>();
-        List<Account> userAccounts = daoAccount.userAccounts(user);
+        List<Account> userAccounts = dao.userAccounts(user);
         for (Account account : userAccounts) {
             AccountUserDTO accountUserDTO = new AccountUserImpDTO(account, user);
             accountUserDTOs.add(accountUserDTO);
@@ -79,76 +86,104 @@ public class BankInterfaceImp extends UnicastRemoteObject implements BankInterfa
      * {@inheritDoc}
      */
     @Override
-    public boolean checkAccPin(int acnt, int pin) throws RemoteException {
+    public boolean checkAccPin(int acnt, int pin) throws RemoteException, NoAccountException {
 
-        Account account = daoAccount.getAccountByAccNum(acnt);
-        return (account != null && account.getAcc_pin() == pin);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean deposit(int acnt, double amt) throws RemoteException {
-        Account account = daoAccount.getAccountByAccNum(acnt);
-        if (account != null) {
-            account.setAcc_bal(account.getAcc_bal() + amt);
-            daoAccount.updateAccount(account);
-            return true;
+        Account account = dao.getAccountByAccNum(acnt);
+        if (account == null) {
+            throw new NoAccountException("La cuenta con número: " + acnt + " no existe");
         }
-        return false;
+
+        return (account.getAcc_pin() == pin);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean withdraw(int acnt, double amt) throws RemoteException {
-        Account account = daoAccount.getAccountByAccNum(acnt);
-        if (account != null && account.getAcc_bal() >= amt) {
-            account.setAcc_bal(account.getAcc_bal() - amt);
-            daoAccount.updateAccount(account);
-            return true;
+    public boolean deposit(int acnt, double amt) throws RemoteException, NoAccountException {
+        Account account = dao.getAccountByAccNum(acnt);
+
+        if (account == null) {
+            throw new NoAccountException("La cuenta con número: " + acnt + " no existe");
         }
-        return false;
+        account.setAcc_bal(account.getAcc_bal() + amt);
+        dao.updateAccount(account);
+        return true;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public double checkBalance(int acnt) throws RemoteException {
-        Account account = daoAccount.getAccountByAccNum(acnt);
-        if (account != null) {
-            return account.getAcc_bal();
+    public boolean withdraw(int acnt, double amt) throws RemoteException, NoAccountException {
+        Account account = dao.getAccountByAccNum(acnt);
+        if (account == null) {
+            throw new NoAccountException("La cuenta con número: " + acnt + " no existe");
         }
-        return -1; // Indica que la cuenta no existe.
+        account.setAcc_bal(account.getAcc_bal() - amt);
+        dao.updateAccount(account);
+        return true;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean isPossibleWithdraw(int acnt, double amt) throws RemoteException {
-        Account account = daoAccount.getAccountByAccNum(acnt);
-        return (account != null && account.getAcc_bal() >= amt);
+    public double checkBalance(int acnt) throws RemoteException, NoAccountException {
+        Account account = dao.getAccountByAccNum(acnt);
+        if (account == null) {
+            throw new NoAccountException("La cuenta con número: " + acnt + " no existe");
+        }
+
+        return account.getAcc_bal();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean transfer(int acntOrigin, int acnDesty, double amt) throws RemoteException {
-        Account originAccount = daoAccount.getAccountByAccNum(acntOrigin);
-        Account destAccount = daoAccount.getAccountByAccNum(acnDesty);
-        if (originAccount != null && destAccount != null && originAccount.getAcc_bal() >= amt) {
+    public boolean isPossibleWithdraw(int acnt, double amt) throws RemoteException, NoAccountException {
+        Account account = dao.getAccountByAccNum(acnt);
+        if (account == null) {
+            throw new NoAccountException("La cuenta con número: " + acnt + " no existe");
+        }
+        return (account.getAcc_bal() >= amt);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean transfer(int acntOrigin, int acnDesty, double amt) throws RemoteException, NoAccountException {
+        Account originAccount = dao.getAccountByAccNum(acntOrigin);
+        Account destAccount = dao.getAccountByAccNum(acnDesty);
+
+        if (originAccount == null) {
+            throw new NoAccountException("La cuenta origen con número: " + acntOrigin + " no existe");
+        }
+
+        if (destAccount == null) {
+            throw new NoAccountException("La cuenta destino con número: " + acnDesty + " no existe");
+        }
+
+        if (originAccount.getAcc_bal() >= amt) {
             originAccount.setAcc_bal(originAccount.getAcc_bal() - amt);
+            dao.updateAccount(originAccount);
             destAccount.setAcc_bal(destAccount.getAcc_bal() + amt);
-            daoAccount.updateAccount(originAccount);
-            daoAccount.updateAccount(destAccount);
+            dao.updateAccount(destAccount);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getName() throws RemoteException {
+        return name;
+    }
+
+    @Override
+    public String getLocation() throws RemoteException {
+        return location;
     }
 
 }

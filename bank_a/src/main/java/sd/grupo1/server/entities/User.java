@@ -78,6 +78,12 @@ public class User {
         this.accounts = accounts;
     }
 
+    public void addAccount(Account acc) {
+        acc.setIUser(this.id);
+        accounts.add(acc);
+        
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -88,8 +94,17 @@ public class User {
         return id == user.id;
     }
 
-    public void addAccount(Account acc){
-        acc.setIUser(this);
-        accounts.add(acc);
+    // complete to strging
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", dni='" + dni + '\'' +
+                ", accounts=" + accounts +
+                '}';
     }
+
 }

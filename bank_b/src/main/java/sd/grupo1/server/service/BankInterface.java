@@ -4,6 +4,8 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import sd.grupo1.exception.NoAccountException;
+import sd.grupo1.exception.NoUserException;
 import sd.grupo1.server.dto.AccountUserDTO;
 
 /**
@@ -15,7 +17,13 @@ import sd.grupo1.server.dto.AccountUserDTO;
  */
 public interface BankInterface extends Remote {
 
+    public String getName() throws RemoteException;
+
+    public String getLocation() throws RemoteException;
+
     /**
+     * 
+     * /**
      * Verifica si un usuario existe en el banco basándose en su número de DNI
      * (Documento Nacional de Identidad).
      *
@@ -23,7 +31,7 @@ public interface BankInterface extends Remote {
      * @return true si el usuario existe en el banco, false en caso contrario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public boolean checkUserExist(int DNI) throws RemoteException;
+    public boolean checkUserExist(String DNI) throws RemoteException;
 
     /**
      * Obtiene una lista de cuentas asociadas a un usuario basándose en su número de
@@ -35,7 +43,7 @@ public interface BankInterface extends Remote {
      *         asociadas al usuario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public List<AccountUserDTO> listAccount(int DNI) throws RemoteException;
+    public List<AccountUserDTO> listAccount(String DNI) throws RemoteException, NoUserException;
 
     /**
      * Verifica si el PIN ingresado corresponde a la cuenta dada.
@@ -45,7 +53,7 @@ public interface BankInterface extends Remote {
      * @return true si el PIN ingresado es correcto, false en caso contrario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public boolean checkAccPin(int acnt, int pin) throws RemoteException;
+    public boolean checkAccPin(int acnt, int pin) throws RemoteException, NoAccountException;
 
     /**
      * Realiza un depósito en una cuenta especificada.
@@ -55,7 +63,7 @@ public interface BankInterface extends Remote {
      * @return true el deposito fue correcto, false en caso contrario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public boolean deposit(int acnt, double amt) throws RemoteException;
+    public boolean deposit(int acnt, double amt) throws RemoteException, NoAccountException;
 
     /**
      * Realiza un retiro de una cuenta especificada.
@@ -65,7 +73,7 @@ public interface BankInterface extends Remote {
      * @return true el retino fue correcto, false en caso contrario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public boolean withdraw(int acnt, double amt) throws RemoteException;
+    public boolean withdraw(int acnt, double amt) throws RemoteException, NoAccountException;
 
     /**
      * Obtiene el saldo actual de una cuenta especificada.
@@ -74,7 +82,7 @@ public interface BankInterface extends Remote {
      * @return El saldo actual de la cuenta.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public double checkBalance(int acnt) throws RemoteException;
+    public double checkBalance(int acnt) throws RemoteException, NoAccountException;
 
     /**
      * Verifica si es posible realizar un retiro de la cantidad especificada de una
@@ -86,7 +94,7 @@ public interface BankInterface extends Remote {
      * @return true si es posible realizar el retiro, false en caso contrario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public boolean isPossibleWithdraw(int acnt, double amt) throws RemoteException;
+    public boolean isPossibleWithdraw(int acnt, double amt) throws RemoteException, NoAccountException;
 
     /**
      * Realiza una transferencia de fondos desde una cuenta de origen a una cuenta
@@ -101,5 +109,5 @@ public interface BankInterface extends Remote {
      *         contrario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public boolean transfer(int acntOrigin, int acnDesty, double amt) throws RemoteException;
+    public boolean transfer(int acntOrigin, int acnDesty, double amt) throws RemoteException, NoAccountException;
 }

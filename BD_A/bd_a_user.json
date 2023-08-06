@@ -1,0 +1,61 @@
+[
+  {
+    "id": 0,
+    "nombre": "Paul",
+    "apellido": "Doe",
+    "dni": "123",
+    "accounts": [
+      {
+        "accNum": 0,
+        "accPin": 0,
+        "accBal": 170.0,
+        "accStatus": 0,
+        "idUser": 0
+      },
+      {
+        "accNum": 1,
+        "accPin": 0,
+        "accBal": 40.0,
+        "accStatus": 0,
+        "idUser": 0
+      },
+      {
+        "accNum": 2,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 0
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "nombre": "Yeimy",
+    "apellido": "Huanca",
+    "dni": "456",
+    "accounts": [
+      {
+        "accNum": 3,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Erick",
+    "apellido": "Hancco",
+    "dni": "789",
+    "accounts": [
+      {
+        "accNum": 4,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 2
+      }
+    ]
+  }
+]

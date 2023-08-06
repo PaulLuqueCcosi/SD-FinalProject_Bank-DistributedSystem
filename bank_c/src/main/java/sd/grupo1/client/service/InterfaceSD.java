@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 import sd.grupo1.client.dto.BankAccountDTO;
+import sd.grupo1.exception.NoBankOnline;
 import sd.grupo1.server.service.BankInterface;
 
 /**
@@ -19,7 +20,7 @@ public interface InterfaceSD {
      * @return Una lista de objetos BankAccountDTO que representan las cuentas asociadas al usuario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public List<BankAccountDTO> getAllAcount(int DNI) throws RemoteException;
+    public List<BankAccountDTO> getAllAcount(String DNI);
 
     /**
      * Realiza un depósito en una cuenta especificada de una entidad bancaria.
@@ -30,7 +31,7 @@ public interface InterfaceSD {
      * @return El nuevo saldo de la cuenta después del depósito.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public int deposit(BankInterface bank, int acnt, int amt) throws RemoteException;
+    public double deposit(BankInterface bank, int acnt, int amt) throws NoBankOnline;
 
     /**
      * Realiza un retiro de una cuenta especificada de una entidad bancaria.
@@ -41,7 +42,7 @@ public interface InterfaceSD {
      * @return El nuevo saldo de la cuenta después del retiro.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public int withdraw(BankInterface bank, int acnt, int amt) throws RemoteException;
+    public double withdraw(BankInterface bank, int acnt, int amt) throws NoBankOnline;
 
     /**
      * Realiza una transferencia de fondos desde una cuenta de una entidad bancaria de origen
@@ -55,6 +56,6 @@ public interface InterfaceSD {
      * @return true si la transferencia se realiza con éxito, false en caso contrario.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public boolean transfer(BankInterface bankOri, int acntOri, BankInterface bankDes, int acntDes, int amt) throws RemoteException;
+    public boolean transfer(BankInterface bankOri, int acntOri, BankInterface bankDes, int acntDes, double amt) throws NoBankOnline;
 
 }

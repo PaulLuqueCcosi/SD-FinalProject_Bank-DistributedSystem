@@ -2,6 +2,7 @@ package sd.grupo1.client.dto;
 
 import java.util.List;
 
+import sd.grupo1.server.dto.AccountUserDTO;
 import sd.grupo1.server.service.BankInterface;
 
 /**
@@ -9,6 +10,10 @@ import sd.grupo1.server.service.BankInterface;
  * Proporciona métodos para obtener información sobre la entidad bancaria y las cuentas asociadas.
  */
 public interface BankAccountDTO {
+
+    public String getName();
+
+    public String getLocation();
 
     /**
      * Obtiene la interfaz remota de la entidad bancaria.

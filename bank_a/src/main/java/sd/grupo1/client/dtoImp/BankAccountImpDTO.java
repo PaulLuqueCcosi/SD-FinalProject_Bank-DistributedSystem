@@ -1,11 +1,11 @@
 package sd.grupo1.client.dtoImp;
 
+import java.rmi.RemoteException;
 import java.util.List;
 
-import org.stringtemplate.v4.compiler.CodeGenerator.region_return;
 
-import sd.grupo1.client.dto.AccountUserDTO;
 import sd.grupo1.client.dto.BankAccountDTO;
+import sd.grupo1.server.dto.AccountUserDTO;
 import sd.grupo1.server.service.BankInterface;
 
 /**
@@ -30,6 +30,28 @@ public class BankAccountImpDTO implements BankAccountDTO{
     @Override
     public List<AccountUserDTO> getAccounts() {
         return lista;
+    }
+
+    @Override
+    public String getName() {
+        try {
+            return bank.getName();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getLocation() {
+        try {
+            return bank.getLocation();
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
     }
 
     
