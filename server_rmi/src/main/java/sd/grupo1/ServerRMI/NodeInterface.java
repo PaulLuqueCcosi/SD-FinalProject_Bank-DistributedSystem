@@ -5,8 +5,10 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+import sd.grupo1.service.BankInterface;
+
 public interface NodeInterface extends Remote , Serializable{
-    public void registrarBanco(String bancoNombre, String url) throws RemoteException;
-    // public List<String[]> obtenerReferenciasRemotas() throws RemoteException;
+    public List<BankInterface> getAllBankInterfaces()  throws RemoteException ;
+
 
 }

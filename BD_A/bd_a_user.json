@@ -8,21 +8,21 @@
       {
         "accNum": 0,
         "accPin": 0,
-        "accBal": 150.0,
+        "accBal": 120.0,
         "accStatus": 0,
         "idUser": 0
       },
       {
         "accNum": 1,
         "accPin": 0,
-        "accBal": 110.0,
+        "accBal": 130.0,
         "accStatus": 0,
         "idUser": 0
       },
       {
         "accNum": 2,
         "accPin": 0,
-        "accBal": 0.0,
+        "accBal": 60.0,
         "accStatus": 0,
         "idUser": 0
       }
@@ -55,6 +55,138 @@
         "accBal": 120.0,
         "accStatus": 0,
         "idUser": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "c1A",
+    "apellido": "c1A - bancoA",
+    "dni": "c1A",
+    "accounts": [
+      {
+        "accNum": 5,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 3
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "c2A",
+    "apellido": "c2A- bancoA",
+    "dni": "c2A",
+    "accounts": [
+      {
+        "accNum": 6,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 4
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "c3A",
+    "apellido": "c3A- bancoA",
+    "dni": "c3A",
+    "accounts": [
+      {
+        "accNum": 7,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 5
+      },
+      {
+        "accNum": 8,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 5
+      },
+      {
+        "accNum": 9,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 5
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nombre": "c4A",
+    "apellido": "c4A - bancoA",
+    "dni": "c4A",
+    "accounts": [
+      {
+        "accNum": 10,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 6
+      },
+      {
+        "accNum": 11,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 6
+      },
+      {
+        "accNum": 12,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 6
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nombre": "c5A",
+    "apellido": "c5A - bancoA",
+    "dni": "c5A",
+    "accounts": [
+      {
+        "accNum": 13,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 7
+      },
+      {
+        "accNum": 14,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 7
+      },
+      {
+        "accNum": 15,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 7
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "nombre": "c2B",
+    "apellido": "c2B - bancoA",
+    "dni": "c2B",
+    "accounts": [
+      {
+        "accNum": 16,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 8
       }
     ]
   }

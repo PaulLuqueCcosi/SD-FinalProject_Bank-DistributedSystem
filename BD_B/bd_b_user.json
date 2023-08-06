@@ -49,5 +49,122 @@
     "apellido": "Hancco",
     "dni": "789",
     "accounts": []
+  },
+  {
+    "id": 3,
+    "nombre": "c1B",
+    "apellido": "c1B - bancoB",
+    "dni": "c1B",
+    "accounts": [
+      {
+        "accNum": 5,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 3
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "c2B",
+    "apellido": "c2B- bancoB",
+    "dni": "c2B",
+    "accounts": [
+      {
+        "accNum": 6,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 4
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "c3B",
+    "apellido": "c3B- bancoB",
+    "dni": "c3B",
+    "accounts": [
+      {
+        "accNum": 7,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 5
+      },
+      {
+        "accNum": 8,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 5
+      },
+      {
+        "accNum": 9,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 5
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nombre": "c4B",
+    "apellido": "c4B - bancoB",
+    "dni": "c4B",
+    "accounts": [
+      {
+        "accNum": 10,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 6
+      },
+      {
+        "accNum": 11,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 6
+      },
+      {
+        "accNum": 12,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 6
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nombre": "c5B",
+    "apellido": "c5B - bancoB",
+    "dni": "c5B",
+    "accounts": [
+      {
+        "accNum": 13,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 7
+      },
+      {
+        "accNum": 14,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 7
+      },
+      {
+        "accNum": 15,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 7
+      }
+    ]
   }
 ]

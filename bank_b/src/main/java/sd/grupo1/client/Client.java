@@ -22,7 +22,7 @@ public class Client extends Policy {
 
     public static void main(String[] args) {
 
-        System.out.println("Hola");
+        System.out.println("Iniciando CLiente");
         Client client = new Client();
         client.startCliente();
 

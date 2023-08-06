@@ -7,7 +7,6 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import sd.grupo1.client.dto.BankAccountDTO;
 import sd.grupo1.client.dtoImp.BankAccountImpDTO;
 import sd.grupo1.client.service.InterfaceSD;
@@ -36,14 +35,14 @@ public class InterfaceSDImp implements InterfaceSD {
         try {
             bank_reg = LocateRegistry.getRegistry(ip, port);
         } catch (RemoteException e) {
-            throw new NoBankOnline("Error al conectar al banco de " + nameBank);
+            throw new NoBankOnline("Error al conectar al banco : " + nameBank);
         }
 
         try {
             bank = (BankInterface) bank_reg.lookup(nameBank);
             accounts = bank.listAccount(DNI);
         } catch (RemoteException | NotBoundException e) {
-            throw new NoBankOnline("Error al conectar al banco de " + nameBank);
+            throw new NoBankOnline("Error al conectar al banco : " + nameBank);
         }
 
         BankAccountImpDTO accountImp = new BankAccountImpDTO(bank, accounts);
@@ -74,29 +73,29 @@ public class InterfaceSDImp implements InterfaceSD {
         try {
             bankAccountDTOs = addBankAccountDTOList(nameBankA, portBankA, ipBankA, DNI, bankAccountDTOs);
         } catch (NoBankOnline e) {
-            System.out.println(ipBankA + ": " + portBankA + "/" + nameBankA + " no se encuetra en linea");
+            System.out.println("Banco: " + nameBankA + " no se encuetra en linea");
         } catch (NoUserException e) {
-            System.out.println("No ser DNI : " + DNI + " in bank " + nameBankA);
+            System.out.println("El DNI : " + DNI + " no se encuentra en : " + nameBankA);
             // e.printStackTrace();
         }
 
         try {
             bankAccountDTOs = addBankAccountDTOList(nameBankB, portBankB, ipBankB, DNI, bankAccountDTOs);
         } catch (NoBankOnline e) {
-            System.out.println(ipBankB + ": " + portBankB + "/" + nameBankB + " no se encuetra en linea");
+            System.out.println("Banco: " + nameBankB + " no se encuetra en linea");
 
         } catch (NoUserException e) {
-            System.out.println("No ser DNI : " + DNI + " in bank " + nameBankB);
+            System.out.println("El DNI : " + DNI + " no se encuentra en : " + nameBankB);
             // e.printStackTrace();
         }
 
         try {
             bankAccountDTOs = addBankAccountDTOList(nameBankC, portBankC, ipBankC, DNI, bankAccountDTOs);
         } catch (NoBankOnline e) {
-            System.out.println(ipBankC + ": " + portBankC + "/" + nameBankC + " no se encuetra en linea");
+            System.out.println("Banco: " + nameBankC + " no se encuetra en linea");
 
         } catch (NoUserException e) {
-            System.out.println("No ser DNI : " + DNI + " in bank " + nameBankC);
+            System.out.println("El DNI : " + DNI + " no se encuentra en : " + nameBankC);
             // e.printStackTrace();
         }
 
@@ -107,7 +106,7 @@ public class InterfaceSDImp implements InterfaceSD {
      * {@inheritDoc}
      */
     @Override
-    public double deposit(BankInterface bank, int acnt, int amt) throws NoBankOnline {
+    public double deposit(BankInterface bank, int acnt, double amt) throws NoBankOnline {
         double newSaldo = -1;
         try {
             // Realizar el depósito usando el método remoto deposit de BankInterface
@@ -120,7 +119,7 @@ public class InterfaceSDImp implements InterfaceSD {
                 System.out.println("El depósito en la cuenta " + acnt + " ha fallado.");
             }
         } catch (RemoteException e) {
-            System.out.println("Error de comunicación con el banco , no se realizaronlas acciones: ");
+            System.out.println("Error de comunicación con el banco.");
             throw new NoBankOnline("No se puede realizar el depósito en el banco remoto.");
         } catch (NoAccountException e) {
             System.out.println("No existe la cuenta " + acnt);
@@ -133,7 +132,7 @@ public class InterfaceSDImp implements InterfaceSD {
      * {@inheritDoc}
      */
     @Override
-    public double withdraw(BankInterface bank, int acnt, int amt) throws NoBankOnline {
+    public double withdraw(BankInterface bank, int acnt, double amt) throws NoBankOnline {
         double newSaldo = -1;
 
         try {
@@ -153,12 +152,13 @@ public class InterfaceSDImp implements InterfaceSD {
             if (success) {
                 System.out.println("Retiro realizado exitosamente en la cuenta " + acnt + ".");
                 newSaldo = bank.checkBalance(acnt);
+
             } else {
                 System.out.println("El retiro de la cuenta " + acnt + " ha fallado.");
             }
 
         } catch (RemoteException e) {
-            System.out.println("Error de comunicación con el banco: ");
+            System.out.println("Error de comunicación con el banco.");
             throw new NoBankOnline("No se puede realizar el retiro en el banco remoto.");
         } catch (NoAccountException e) {
             System.out.println("No existe la cuenta " + acnt);
@@ -173,8 +173,10 @@ public class InterfaceSDImp implements InterfaceSD {
      * {@inheritDoc}
      */
     @Override
-    public boolean transfer(BankInterface bankOri, int acntOri, BankInterface bankDes, int acntDes, double amt) {
+    public boolean transfer(BankInterface bankOri, int acntOri, BankInterface bankDes, int acntDes, double amt)
+            throws NoBankOnline {
 
+        // retiro
         try {
             // Verificar si es posible realizar el retiro del monto especificado en la
             // cuenta de origen
@@ -186,24 +188,43 @@ public class InterfaceSDImp implements InterfaceSD {
                 return false;
             }
 
-            // Realizar la transferencia usando el método remoto transfer de BankInterface
-            boolean successTransfer = bankOri.transfer(acntOri, acntDes, amt);
+            bankOri.withdraw(acntOri, amt);
 
-            if (successTransfer) {
-                System.out.println("Transferencia exitosa desde la cuenta " + acntOri + " hacia la cuenta " + acntDes
-                        + " por un monto de " + amt + ".");
-                return true;
-            } else {
-                System.out.println("La transferencia ha fallado.");
-                return false;
-            }
         } catch (RemoteException e) {
-            System.out.println("Error de comunicación con el banco: " + e.getMessage());
+            System.out.println("Error de comunicación con el banco origen: ");
+            return false;
         } catch (NoAccountException e) {
-            System.out.println("No existe la cuenta " + acntOri);
+            System.out.println("No existe la cuenta origen: " + acntOri);
+            return false;
         }
 
-        return false;
+        // deposito
+
+        try {
+            bankDes.deposit(acntDes, amt);
+        } catch (RemoteException e) {
+            System.out.println("Error de comunicación con el banco destino: ");
+            try {
+                bankOri.deposit(acntOri, amt);
+            } catch (RemoteException | NoAccountException e1) {
+                System.out.println("Error de comunicación con el banco Origen");
+            }
+            return false;
+        } catch (NoAccountException e) {
+            System.out.println("No existe la cuenta destino: " + acntOri);
+            try {
+                bankOri.deposit(acntOri, amt);
+            } catch (RemoteException | NoAccountException e1) {
+                System.out.println("Error de comunicación con el banco Origen");
+            }
+            return false;
+        }
+
+        System.out.println("Transferencia exitosa desde la cuenta " + acntOri + " hacia la cuenta " + acntDes
+                + " por un monto de " + amt + ".");
+
+        return true;
+
     }
 
 }

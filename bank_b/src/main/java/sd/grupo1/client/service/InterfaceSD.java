@@ -31,7 +31,7 @@ public interface InterfaceSD {
      * @return El nuevo saldo de la cuenta después del depósito.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public double deposit(BankInterface bank, int acnt, int amt) throws NoBankOnline;
+    public double deposit(BankInterface bank, int acnt, double amt) throws NoBankOnline;
 
     /**
      * Realiza un retiro de una cuenta especificada de una entidad bancaria.
@@ -42,7 +42,7 @@ public interface InterfaceSD {
      * @return El nuevo saldo de la cuenta después del retiro.
      * @throws RemoteException Si ocurre un error en la comunicación remota.
      */
-    public double withdraw(BankInterface bank, int acnt, int amt) throws NoBankOnline;
+    public double withdraw(BankInterface bank, int acnt, double amt) throws NoBankOnline;
 
     /**
      * Realiza una transferencia de fondos desde una cuenta de una entidad bancaria de origen

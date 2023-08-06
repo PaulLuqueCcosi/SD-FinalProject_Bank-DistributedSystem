@@ -8,7 +8,7 @@
       {
         "accNum": 0,
         "accPin": 0,
-        "accBal": 50.0,
+        "accBal": 210.0,
         "accStatus": 0,
         "idUser": 0
       }
@@ -42,5 +42,137 @@
     "apellido": "Hancco",
     "dni": "789",
     "accounts": []
+  },
+  {
+    "id": 3,
+    "nombre": "c1C",
+    "apellido": "c1C - bancoC",
+    "dni": "c1C",
+    "accounts": [
+      {
+        "accNum": 5,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 3
+      },
+      {
+        "accNum": 51,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 3
+      },
+      {
+        "accNum": 52,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 3
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "c2C",
+    "apellido": "c2C- bancoC",
+    "dni": "c2C",
+    "accounts": [
+      {
+        "accNum": 6,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 4
+      },
+      {
+        "accNum": 61,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 4
+      },
+      {
+        "accNum": 62,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 4
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "c3C",
+    "apellido": "c3C- bancoC",
+    "dni": "c3C",
+    "accounts": [
+      {
+        "accNum": 7,
+        "accPin": 0,
+        "accBal": 110.0,
+        "accStatus": 0,
+        "idUser": 5
+      },
+      {
+        "accNum": 8,
+        "accPin": 0,
+        "accBal": 130.0,
+        "accStatus": 0,
+        "idUser": 5
+      },
+      {
+        "accNum": 9,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 5
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "nombre": "c4C",
+    "apellido": "c4C - bancoC",
+    "dni": "c4C",
+    "accounts": [
+      {
+        "accNum": 10,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 6
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "nombre": "c1A",
+    "apellido": "c1A - bancoC",
+    "dni": "c1A",
+    "accounts": [
+      {
+        "accNum": 13,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 7
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "nombre": "c2B",
+    "apellido": "c2B - bancoC",
+    "dni": "c2B",
+    "accounts": [
+      {
+        "accNum": 14,
+        "accPin": 0,
+        "accBal": 120.0,
+        "accStatus": 0,
+        "idUser": 8
+      }
+    ]
   }
 ]

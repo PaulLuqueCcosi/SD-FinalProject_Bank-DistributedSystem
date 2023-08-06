@@ -7,8 +7,6 @@ import java.security.*;
 
 import sd.grupo1.server.dao.Dao;
 import sd.grupo1.server.daoImp.jsonImp.JsonFileUserDAO;
-import sd.grupo1.server.entities.Account;
-import sd.grupo1.server.entities.User;
 import sd.grupo1.server.serviceImp.BankInterfaceImp;
 
 /**

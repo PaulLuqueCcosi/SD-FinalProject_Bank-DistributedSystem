@@ -1,29 +1,33 @@
 package sd.grupo1.ServerRMI;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.security.Policy;
 
-public class Main {
-    public static void main(String[] args) {
-
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new SecurityManager());
-        }
+public class Main extends Policy {
+    private void startServer() {
         try {
-            // NodeImple nodoCentral = new NodeImple();
-            // LocateRegistry.createRegistry(1099); // Puerto RMI
-            // Naming.rebind("DNS_RMI", nodoCentral);
-            // System.out.println("Nodo central en ejecución.");
 
+            Registry registry = LocateRegistry.createRegistry(5000);
+            registry.rebind("allBanks", new NodeImple());
 
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("dns", new NodeImple());
-            System.out.println("system is ready");
-
+            System.out.println("ServidroCentralListo");
+            System.out.println("Puerto 5000");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) throws RemoteException {
+
+        Main main = new Main();
+        System.setProperty("java.rmi.server.hostname", "0.0.0.0");// sets the RMI
+        System.setProperty("java.rmi.server.hostname", "0.0.0.0");// sets the RMI
+        main.startServer();
+        System.setSecurityManager(new SecurityManager());
+
     }
 }

@@ -19,7 +19,7 @@ public class BankConsoleApp {
     private InterfaceSD bankService;
     HashMap<Integer, BankAccount> map = new HashMap<>();
     private List<BankAccountDTO> listaBancos = new ArrayList<BankAccountDTO>();
-    String dni = "73057755";
+    String dni = "123";
 
     public BankConsoleApp(InterfaceSD bankService) {
         this.bankService = bankService;
@@ -30,9 +30,6 @@ public class BankConsoleApp {
         System.out.print("Ingrese su número de DNI: ");
         dni = scanner.nextLine();
 
-        // System.out.print("Ingrese su contraseña: ");
-        // String pin = scanner.nextLine();
-        // this.dni = "73057755";
         return true;
 
     }
@@ -52,7 +49,7 @@ public class BankConsoleApp {
             System.out.println("3. Realizar retiro");
             System.out.println("4. Realizar transferencia");
             System.out.println("0. Salir");
-            System.out.print("Seleccione una opción: ");
+            System.out.println("Seleccione una opción: ");
             int option = -1;
             try {
                 option = Integer.parseInt(scanner.nextLine());
@@ -83,6 +80,7 @@ public class BankConsoleApp {
                     System.out.println("Opción inválida. Intente nuevamente.");
             }
         }
+
     }
 
     public void run() {
@@ -94,28 +92,26 @@ public class BankConsoleApp {
             loggedIn = login();
         }
         System.out.println("Bienvenido al sistema :  " + dni);
-
         menu();
 
     }
 
     private void update() {
         listaBancos = bankService.getAllAcount(dni);
-
     }
 
     private void listAllCounts() {
-        // test
         update();
 
         if (listaBancos == null) {
-            System.out.println("DNI no encontrado en ninguno de los bancos.");
+            System.out.println("DNI : " + dni + "no encontrado en ninguno de los bancos.");
             return;
         }
 
         System.out.println("Listado de Bancos");
 
         for (BankAccountDTO bank : listaBancos) {
+            System.out.println("\n");
             System.out.println("*************************************************************");
             System.out.println(bank.getName());
             System.out.println(bank.getLocation());
@@ -132,7 +128,7 @@ public class BankConsoleApp {
     }
 
     private void performDeposit() {
-        HashMap<Integer, BankAccount> map = new HashMap<Integer, BankAccount>();
+        map = new HashMap<Integer, BankAccount>();
         update();
         Scanner scanner = new Scanner(System.in);
 
@@ -158,45 +154,68 @@ public class BankConsoleApp {
         System.out.println("[-1] Atras");
         System.out.println();
 
-        System.out.print("[?]: ");
-        int indice = Integer.parseInt(scanner.nextLine());
+        int selectedOption = -1;
 
-        if (indice == -1) {
-            return;
+        while (true) {
+            System.out.print("[?]: ");
+            String input = scanner.nextLine();
+
+            try {
+                selectedOption = Integer.parseInt(input);
+
+                if (selectedOption == -1) {
+                    return;
+                }
+
+                if (selectedOption < 1 || selectedOption > i) {
+                    System.out.println("Opción inválida. Intente nuevamente o ingrese -1 para salir.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Intente nuevamente o ingrese -1 para salir.");
+            }
         }
 
-        int nuemroDeCuenta = map.get(indice).getAcc().getNumberAccount();
-        BankInterface bank = map.get(indice).getBank();
+        int nuemroDeCuenta = map.get(selectedOption).getAcc().getNumberAccount();
+        BankInterface bank = map.get(selectedOption).getBank();
         System.out.printf("Cuenta Numero : %s , seleccionada del banco %s", nuemroDeCuenta,
-                map.get(indice).getNameBank());
+                map.get(selectedOption).getNameBank());
         System.out.println();
 
-        System.out.print("Ingrese el monto a depositar: ");
-        double amount = Double.parseDouble(scanner.nextLine());
+        // ingreso del monto y deposito
+        while (true) {
+            System.out.print("Ingrese el monto a depositar (o ingrese 'exit' para cancelar): ");
+            String amountInput = scanner.nextLine();
 
-        try {
-            bank.deposit(nuemroDeCuenta, amount);
-        } catch (RemoteException e) {
-            System.out.println("No se pudo conectar con el banco");
-            // e.printStackTrace();
-        } catch (NoAccountException e) {
-            System.out.println("Numero de cuenta no existe");
-        }
+            if (amountInput.equalsIgnoreCase("exit")) {
+                return;
+            }
 
-        try {
-            System.out.println("Depósito realizado. \nNuevo saldo: " + bank.checkBalance(nuemroDeCuenta));
-        } catch (RemoteException e) {
-            System.out.println("No se pudo conectar con el banco");
-            e.printStackTrace();
-        } catch (NoAccountException e) {
-            System.out.println("Numero de cuenta no existe");
+            try {
+                double amount = Double.parseDouble(amountInput);
 
+                if (amount <= 0) {
+                    System.out.println("Monto inválido. Debe ser mayor que cero.");
+                } else {
+                    try {
+                        bankService.deposit(bank, nuemroDeCuenta, amount);
+                        // System.out.println("Depósito realizado exitosamente.");
+                    } catch (NoBankOnline e) {
+                        System.out.println("Depósito NO realizado debido a problemas en el banco.");
+                    }
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Intente nuevamente o ingrese 'exit' para cancelar.");
+            }
         }
 
     }
 
     private void performWithdraw() {
-        HashMap<Integer, BankAccount> map = new HashMap<Integer, BankAccount>();
+
+        map = new HashMap<Integer, BankAccount>();
         update();
         Scanner scanner = new Scanner(System.in);
 
@@ -222,60 +241,72 @@ public class BankConsoleApp {
         System.out.println("[-1] Atras");
         System.out.println();
 
-        System.out.print("[?]: ");
-        int indice = Integer.parseInt(scanner.nextLine());
+        int selectedOption = -1;
 
-        if (indice == -1) {
-            return;
+        while (true) {
+            System.out.print("[?]: ");
+            String input = scanner.nextLine();
+
+            try {
+                selectedOption = Integer.parseInt(input);
+
+                if (selectedOption == -1) {
+                    return;
+                }
+
+                if (selectedOption < 1 || selectedOption > i) {
+                    System.out.println("Opción inválida. Intente nuevamente o ingrese -1 para salir.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Intente nuevamente o ingrese -1 para salir.");
+            }
         }
 
-        int nuemroDeCuenta = map.get(indice).getAcc().getNumberAccount();
-        BankInterface bank = map.get(indice).getBank();
-        System.out.println("\n");
+        int nuemroDeCuenta = map.get(selectedOption).getAcc().getNumberAccount();
+        BankInterface bank = map.get(selectedOption).getBank();
         System.out.printf("Cuenta Numero : %s , seleccionada del banco %s", nuemroDeCuenta,
-                map.get(indice).getNameBank());
-        System.out.println("\n");
+                map.get(selectedOption).getNameBank());
+        System.out.println();
 
-        System.out.print("Ingrese el monto a retirar: ");
-        double amount = Double.parseDouble(scanner.nextLine());
+        // ingreso del monto y deposito
+        while (true) {
+            System.out.print("Ingrese el monto a retirar (o ingrese 'exit' para cancelar): ");
+            String amountInput = scanner.nextLine();
 
-        // verificamos si se puede retirar
-
-        try {
-            boolean isPosible = bank.isPossibleWithdraw(nuemroDeCuenta, amount);
-            if (isPosible) {
-                System.out.print("Ingrese el PIN de la cuenta: ");
-                String pin = scanner.nextLine();
-                int inpin = Integer.parseInt(pin);
-
-                boolean isPin = bank.checkAccPin(nuemroDeCuenta, inpin);
-
-                if (isPin) {
-                    System.out.println("Procesando el retiro...");
-                    bank.withdraw(nuemroDeCuenta, amount);
-                    System.out.println("Retiro realizado. \nNuevo saldo: " + bank.checkBalance(nuemroDeCuenta));
-                    return;
-                } else {
-                    System.out.println("PIN incorrecto");
-                }
-            } else {
-                System.out.println("Saldo en la cuenta no es suficiente: " + bank.checkBalance(nuemroDeCuenta));
+            if (amountInput.equalsIgnoreCase("exit")) {
+                return;
             }
-        } catch (RemoteException e) {
-            System.out.println("No se pudo conectar con el banco");
 
-        } catch (NoAccountException e) {
-            System.out.println("Numero de cuenta no existe");
+            try {
+                double amount = Double.parseDouble(amountInput);
+
+                if (amount <= 0) {
+                    System.out.println("Monto inválido. Debe ser mayor que cero.");
+                } else {
+                    try {
+                        bankService.withdraw(bank, nuemroDeCuenta, amount);
+                        // System.out.println("Retiro realizado exitosamente.");
+                    } catch (NoBankOnline e) {
+                        System.out.println("Depósito NO realizado debido a problemas en el banco.");
+                    }
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Intente nuevamente o ingrese 'exit' para cancelar.");
+            }
         }
 
     }
 
     private void performTransfer() {
-        HashMap<Integer, BankAccount> map = new HashMap<Integer, BankAccount>();
+
+        map = new HashMap<Integer, BankAccount>();
         update();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Seleccione a la cuenta a la cual desea retirar []");
+        System.out.println("Seleccione a la cuenta a la cual desea Retirar []");
 
         int i = 0;
         for (BankAccountDTO bankAccountDTO : listaBancos) {
@@ -297,61 +328,38 @@ public class BankConsoleApp {
         System.out.println("[-1] Atras");
         System.out.println();
 
-        System.out.print("[?]: ");
-        int indice1 = Integer.parseInt(scanner.nextLine());
+        int selectedOption = -1;
 
-        if (indice1 == -1) {
-            return;
-        }
+        while (true) {
+            System.out.print("[?]: ");
+            String input = scanner.nextLine();
 
-        int nuemroDeCuenta1 = map.get(indice1).getAcc().getNumberAccount();
-        BankInterface bank1 = map.get(indice1).getBank();
-        System.out.println("\n");
-        System.out.printf("Cuenta Numero : %s , seleccionada del banco %s", nuemroDeCuenta1,
-                map.get(indice1).getNameBank() + "\n");
-
-        // ingresa el mondo a retirar
-        System.out.print("Ingrese el monto a retirar: ");
-        double amount = Double.parseDouble(scanner.nextLine());
-
-        boolean isPosible = false;
-        try {
-            isPosible = bank1.isPossibleWithdraw(nuemroDeCuenta1, amount);
-        } catch (RemoteException | NoAccountException e) {
-            System.out.println("Error al comunicarse con el Banco");
-            // e.printStackTrace();
-        }
-        if (!isPosible) {
             try {
-                System.out.println("Saldo en la cuenta no es suficiente: " + bank1.checkBalance(nuemroDeCuenta1));
-            } catch (RemoteException | NoAccountException e) {
-                System.out.println("Error al comunicarse con el Banco");
+                selectedOption = Integer.parseInt(input);
 
+                if (selectedOption == -1) {
+                    return;
+                }
+
+                if (selectedOption < 1 || selectedOption > i) {
+                    System.out.println("Opción inválida. Intente nuevamente o ingrese -1 para salir.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Intente nuevamente o ingrese -1 para salir.");
             }
-            return;
         }
 
-        // ingreso de la contrasena
+        int nuemroDeCuentaOrigen = map.get(selectedOption).getAcc().getNumberAccount();
+        BankInterface bankOrigen = map.get(selectedOption).getBank();
+        System.out.printf("Cuenta Numero : %s , seleccionada del banco %s", nuemroDeCuentaOrigen,
+                map.get(selectedOption).getNameBank());
+        System.out.println();
 
-        System.out.print("Ingrese el PIN de la cuenta: ");
-        String pin = scanner.nextLine();
-        int inpin = Integer.parseInt(pin);
-        boolean isPin = false;
-        try {
-            isPin = bank1.checkAccPin(nuemroDeCuenta1, inpin);
-        } catch (RemoteException | NoAccountException e) {
-            // TODO Auto-generated catch block
-            System.out.println("Error al comunicarse con el banco");
-        }
+        // ingreso datos destino
 
-        if (!isPin) {
-            System.out.println("PIN incorrecto");
-            return;
-        }
-
-        //////////////////
-
-        System.out.println("Seleccione a la cuenta a la cual desea depositar []");
+        System.out.println("Seleccione a la cuenta a la cual desea Depositar []");
 
         int j = 0;
         for (BankAccountDTO bankAccountDTO : listaBancos) {
@@ -367,41 +375,76 @@ public class BankConsoleApp {
 
             }
         }
+
         System.out.println("[-1] Atras");
         System.out.println();
 
-        System.out.print("[?]: ");
-        int indice2 = Integer.parseInt(scanner.nextLine());
+        int selectedOption2 = -1;
 
-        if (indice2 == -1) {
+        while (true) {
+            System.out.print("[?]: ");
+            String input2 = scanner.nextLine();
+
+            try {
+                selectedOption2 = Integer.parseInt(input2);
+
+                if (selectedOption2 == -1) {
+                    return;
+                }
+
+                if (selectedOption2 < 1 || selectedOption2 > j) {
+                    System.out.println("Opción inválida. Intente nuevamente o ingrese -1 para salir.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Intente nuevamente o ingrese -1 para salir.");
+            }
+        }
+
+        // verifcamos si es la misma cuenta
+        if (selectedOption == selectedOption2) {
+            System.out.println("Las cuentas seleccionadas son iguales");
             return;
         }
 
-        if (indice1 == indice2) {
-            System.out.println("No se puede transferir entre las mismas cuentas");
-            return;
+        int nuemroDeCuentaDes = map.get(selectedOption2).getAcc().getNumberAccount();
+        BankInterface bankDes = map.get(selectedOption2).getBank();
+        System.out.printf("Cuenta Numero : %s , seleccionada del banco %s", nuemroDeCuentaDes,
+                map.get(selectedOption2).getNameBank());
+        System.out.println();
+
+        double amount = -1;
+        // ingreso del monto y deposito
+        while (true) {
+            System.out.print("Ingrese el monto a transferir (o ingrese 'exit' para cancelar): ");
+            String amountInput = scanner.nextLine();
+
+            if (amountInput.equalsIgnoreCase("exit")) {
+                return;
+            }
+
+            try {
+                amount = Double.parseDouble(amountInput);
+
+                if (amount <= 0) {
+                    System.out.println("Monto inválido. Debe ser mayor que cero.");
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Entrada inválida. Intente nuevamente o ingrese 'exit' para cancelar.");
+            }
         }
 
-        int nuemroDeCuenta2 = map.get(indice2).getAcc().getNumberAccount();
-        BankInterface bank2 = map.get(indice2).getBank();
+        // realizando transferencia
 
-        System.out.println("\n");
-        System.out.printf("Cuenta Numero : %s , seleccionada del banco %s", nuemroDeCuenta2,
-                map.get(indice2).getNameBank());
-        System.out.println("\n");
-
-        // porcesando transferencia
-        System.out.println("Procesando el trasnferencia...");
         try {
-            bankService.transfer(bank1, nuemroDeCuenta1, bank2, nuemroDeCuenta2, amount);
+            bankService.transfer(bankOrigen, nuemroDeCuentaOrigen, bankDes, nuemroDeCuentaDes, amount);
         } catch (NoBankOnline e) {
-            // TODO Auto-generated catch block
+            System.out.println("Transferencia NO realizada");
             e.printStackTrace();
         }
-
-        System.out.printf("Retiro transferencia realizasa");
-        return;
-
     }
 
 }
